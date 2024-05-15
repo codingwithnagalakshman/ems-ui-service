@@ -1,17 +1,7 @@
 import Input from "./UI/Input"
 import {useState} from "react"
 import classes from "./DepartmentInput.module.css"
-
-const empList = [
-  "Employee1",
-  "Employee2",
-  "Employee3",
-  "Employee4",
-  "Employee5",
-  "Employee6",
-  "Employee7",
-  "Employee8",
-]
+import DisplayTable from "./UI/DisplayTable"
 
 const DepartmentInput = () => {
   const [name, setName] = useState("")
@@ -21,9 +11,15 @@ const DepartmentInput = () => {
     setName(e.target.value)
   }
 
-  const searchHandler = (e) => {
+  const searchHandler = async (e) => {
     e.preventDefault()
-    setDeptEmpList(empList)
+    try {
+      const response = await fetch(
+        `http://localhost:8080/employees-by-department-name/${name}`
+      )
+      const employeeList = await response.json()
+      setDeptEmpList(employeeList)
+    } catch (error) {}
   }
 
   return (
@@ -39,9 +35,7 @@ const DepartmentInput = () => {
         <button className={classes.button}>Search</button>
       </form>
       <div className={classes.items}>
-        {deptEmpList.map((emp) => (
-          <div className={classes.item}> {emp}</div>
-        ))}
+        {deptEmpList && <DisplayTable empData={deptEmpList} />}
       </div>
     </>
   )
