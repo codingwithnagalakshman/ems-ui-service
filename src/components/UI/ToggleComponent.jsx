@@ -4,7 +4,7 @@ import {useEffect, useState} from "react"
 
 const ToggleComponent = () => {
   const [toggle, setToggle] = useState(false)
-  const [empList, setEmpList] = useState([])
+  const [empList, setEmpList] = useState(null)
 
   useEffect(() => {
     // declare the data fetching function
